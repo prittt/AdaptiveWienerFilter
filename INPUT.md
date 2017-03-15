@@ -24,7 +24,7 @@ $$\sigma^2 = \displaystyle\frac{1}{NM}\displaystyle\sum_{n_1,n_2 \in \eta} src^2
 
 $$dst(n_1, n_2) = \mu + \displaystyle\frac{\max(0,\sigma^2 - \nu^2)}{\max(\sigma^2, \nu^2)} \displaystyle (src(n_1,n_2) - \mu)$$
  
-<p align="justify">where $\nu^2$ is the noise variance and $dst$ is the output filtered image. If the noise variance is not given, the function uses the average of all the local estimated variances. Note that the above formula is the one actually used by the Matlab's $wiener2$ function code (differently from what declared in the documentation <sup><a href="#WIENER2_MATLAB">2</a></sup>).</p> 
+<p align="justify">where $\nu^2$ is the noise variance and $dst$ is the output filtered image. If the noise variance is not given, the function uses the average of all the local estimated variances. Note that the above formula is the one actually used by the Matlab's $wiener2$ function (differently from what declared in the documentation <sup><a href="#WIENER2_MATLAB">2</a></sup>).</p> 
 
 ## References
 
