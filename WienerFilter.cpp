@@ -33,7 +33,7 @@ Federico Bolelli: federico.bolelli@unimore.it
 
 using namespace cv;
 
-void WienerFilter(const Mat& src, Mat& dst, const Size& block){
+double WienerFilterImpl(const Mat& src, Mat& dst, double noiseVariance, const Size& block){
 
 	assert(("Invalid block dimensions", block.width % 2 == 1 && block.height % 2 == 1 && block.width > 1 && block.height > 1));
 	assert(("src and dst must be one channel grayscale images", src.channels() == 1, dst.channels() == 1));
@@ -52,10 +52,12 @@ void WienerFilter(const Mat& src, Mat& dst, const Size& block){
 	Mat1d means2 = means.mul(means);
 	variances = sqrMeans - (means.mul(means));
 
-	reduce(variances, avgVarianceMat, 1, CV_REDUCE_SUM, -1);
-	reduce(avgVarianceMat, avgVarianceMat, 0, CV_REDUCE_SUM, -1);
-
-	double avgVariance = avgVarianceMat(0, 0) / (h*w);
+	if (noiseVariance < 0){
+		// I have to estimate the noiseVariance
+		reduce(variances, avgVarianceMat, 1, CV_REDUCE_SUM, -1);
+		reduce(avgVarianceMat, avgVarianceMat, 0, CV_REDUCE_SUM, -1);
+		noiseVariance = avgVarianceMat(0, 0) / (h*w);
+	}
 
 	for (int r = 0; r < h; ++r){
 		// get row pointers
@@ -65,8 +67,20 @@ void WienerFilter(const Mat& src, Mat& dst, const Size& block){
 		double * const meanRow = means.ptr<double>(r);
 		for (int c = 0; c < w; ++c) {
 			dstRow[c] = saturate_cast<uchar>(
-				meanRow[c] + max(0., varRow[c] - avgVariance) / max(varRow[c], avgVariance) * (srcRow[c] - meanRow[c])
+				meanRow[c] + max(0., varRow[c] - noiseVariance) / max(varRow[c], noiseVariance) * (srcRow[c] - meanRow[c])
 			);
 		}
 	}
+
+	return noiseVariance;
+}
+
+void WienerFilter(const Mat& src, Mat& dst, double noiseVariance, const Size& block){
+	WienerFilterImpl(src, dst, noiseVariance, block);
+	return;
+}
+
+
+double WienerFilter(const Mat& src, Mat& dst, const Size& block){
+	return WienerFilterImpl(src, dst, -1, block);
 }

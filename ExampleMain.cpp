@@ -46,22 +46,28 @@ int main(void)
 	// image and save results in the project installation folder
 
 	string testImage = "ExampleImage.jpg";
-	Mat1b Is = imread(testImage, CV_LOAD_IMAGE_GRAYSCALE);
-	Mat1b I3x3, I5x5;
+	Mat1b src = imread(testImage, CV_LOAD_IMAGE_GRAYSCALE);
+	Mat1b dst3x3, dst5x5, dst5x5_fixedNoise;
 
-	if (Is.empty()){
+	if (src.empty()){
 		cout << "The specified image '" << testImage << "' does not exists" << endl;
 		exit(-1);
 	}
 
-	// Call to WienerFilter function with a 3x3 kernel
-	WienerFilter(Is, I3x3, Size(3,3));
+	double estimatedNoiseVariance;
 
-	// Call to WienerFilter function with default 5x5 kernel
-	WienerFilter(Is, I5x5);
+	// Call to WienerFilter function with a 3x3 kernel and estimated noise variances
+	estimatedNoiseVariance = WienerFilter(src, dst3x3, Size(3, 3));
 
-	imwrite("Filtered3X3.png", I3x3); 
-	imwrite("Filtered5X5.png", I5x5);
+	// Call to WienerFilter function with default 5x5 kernel estimated noise variances
+	estimatedNoiseVariance = WienerFilter(src, dst5x5);
+
+	// Call to WienerFilter function with a default 5x5 kernel and fixed noise variances
+	WienerFilter(src, dst5x5_fixedNoise, 5000);
+
+	imwrite("Filtered3X3.png", dst3x3);
+	imwrite("Filtered5X5.png", dst5x5);
+	imwrite("Filtered5X5_fixedNoise.png", dst5x5_fixedNoise);
 
 	return 0;
 }
