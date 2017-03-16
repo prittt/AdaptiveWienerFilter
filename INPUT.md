@@ -6,7 +6,7 @@ __Contributors__
 - [Costantino Grana](https://github.com/CostantinoGrana)
 
 ## Requirements
-- OpenCV 3.0 or higher (http://opencv.org/downloads.html);
+- OpenCV 3.1.0 or higher (http://opencv.org/downloads.html);
 - One of your favourite IDE/compiler: Visual Studio 2013 or higher, Xcode 5.0.1, gcc 4.7 or higher, .. (with C++11 support).
 
 If you think it is convenience, you can use Cmake to create a project running this code. If OpenCV are installed in your environment, the "CMakeLists.txt" file (included in this repository) will automatically find OpenCV path and create the project.
