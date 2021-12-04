@@ -1,4 +1,4 @@
-/*Copyright(c) 2017-2018 Federico Bolelli, Costantino Grana
+/*Copyright(c) 2017-2021 Federico Bolelli, Costantino Grana
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -29,27 +29,25 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 Federico Bolelli: federico.bolelli@unimore.it
 */
 
-#include <opencv2/core/core.hpp> 
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-
 #include <iostream>
+
+#include <opencv2/imgcodecs.hpp>
+
+#include <WienerFilter.h>
 
 using namespace cv;
 using namespace std;
 
-#include "WienerFilter.h"
-
-int main(void)
+int main()
 {
 	// This main applies the Adaptive Wiener Filter on a simple example
 	// image and save results in the project installation folder
 
 	string testImage = "ExampleImage.jpg";
-	Mat1b src = imread(testImage, CV_LOAD_IMAGE_GRAYSCALE);
+	Mat1b src = imread(testImage, IMREAD_GRAYSCALE);
 	Mat1b dst3x3, dst5x5, dst5x5_fixedNoise;
 
-	if (src.empty()){
+	if (src.empty()) {
 		cout << "The specified image '" << testImage << "' does not exists" << endl;
 		exit(-1);
 	}
