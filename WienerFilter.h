@@ -1,4 +1,4 @@
-/*Copyright(c) 2017-2018 Federico Bolelli, Costantino Grana
+/*Copyright(c) 2017-2021 Federico Bolelli, Costantino Grana
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -31,22 +31,18 @@ Federico Bolelli: federico.bolelli@unimore.it
 
 #pragma once
 
-#include <opencv2/core/core.hpp> 
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-
-#include <assert.h>
+#include <opencv2/core.hpp>
 
 /** @brief Implementation of the adaptive Wiener filter
 
-This function applies to the src image the adaptive Wiener filter and 
-store the result in the dst image. The formula that will be apply is 
-the following one: 
+This function applies to the src image the adaptive Wiener filter and
+store the result in the dst image. The formula that will be apply is
+the following one:
 
 dst(x, y) = u + max(0, s^2 - v^2)(src(x, y) - u) / max(s^2, v^2)
 
 where u is the local mean, s^2 is the variance at NxM neighborhood
-around each pixel (they depend on block dimension) e v^2 is the noise 
+around each pixel (they depend on block dimension) e v^2 is the noise
 variance calculated as the average of all the local estimated variances
 if not given.
 
@@ -59,7 +55,7 @@ if not given.
 */
 double WienerFilter(const cv::Mat& src, cv::Mat& dst, const cv::Size& block = cv::Size(5, 5));
 
-/** @overload 
+/** @overload
 
 @param[in] src input grayscale image (Mat1b)
 @param[out] dst output grayscale image (Mat1b)
